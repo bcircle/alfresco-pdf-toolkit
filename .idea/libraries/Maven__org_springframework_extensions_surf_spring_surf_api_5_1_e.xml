@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.springframework.extensions.surf:spring-surf-api:5.1.e">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/extensions/surf/spring-surf-api/5.1.e/spring-surf-api-5.1.e.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/extensions/surf/spring-surf-api/5.1.e/spring-surf-api-5.1.e-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/springframework/extensions/surf/spring-surf-api/5.1.e/spring-surf-api-5.1.e-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

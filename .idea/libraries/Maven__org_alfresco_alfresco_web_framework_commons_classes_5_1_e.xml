@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.alfresco:alfresco-web-framework-commons:classes:5.1.e">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/alfresco/alfresco-web-framework-commons/5.1.e/alfresco-web-framework-commons-5.1.e-classes.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/alfresco/alfresco-web-framework-commons/5.1.e/alfresco-web-framework-commons-5.1.e-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/alfresco/alfresco-web-framework-commons/5.1.e/alfresco-web-framework-commons-5.1.e-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

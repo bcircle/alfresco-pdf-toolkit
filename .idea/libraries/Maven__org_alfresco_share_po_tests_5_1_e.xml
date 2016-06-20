@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.alfresco:share-po:tests:5.1.e">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/alfresco/share-po/5.1.e/share-po-5.1.e-tests.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/alfresco/share-po/5.1.e/share-po-5.1.e-test-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/alfresco/share-po/5.1.e/share-po-5.1.e-test-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

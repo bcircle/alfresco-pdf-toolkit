@@ -20,6 +20,9 @@
 			        		<param name="destination">{node.nodeRef}</param>
 			        		<param name="successMessage">message.pdf-signature.success</param>
 			        		<param name="failureMessage">message.pdf-signature.failure</param>
+							<permissions>
+								<permission allow="true">Write</permission>
+							</permissions>
 			        		<evaluator>evaluator.pdftoolkit.doclib.action.pdfToolkitMimetype</evaluator>
 						</action>
 					</actions>
@@ -52,6 +55,9 @@
 			        		<param name="destination">{node.nodeRef}</param>
 			        		<param name="successMessage">message.pdf-watermark.success</param>
 			        		<param name="failureMessage">message.pdf-watermark.failure</param>
+							<permissions>
+								<permission allow="true">Write</permission>
+							</permissions>
 			        		<evaluator>evaluator.pdftoolkit.doclib.action.pdfToolkitMimetype</evaluator>
 						</action>
 					</actions>
@@ -84,6 +90,9 @@
 			        		<param name="destination">{node.nodeRef}</param>
 			        		<param name="successMessage">message.pdf-append.success</param>
 			        		<param name="failureMessage">message.pdf-append.failure</param>
+							<permissions>
+								<permission allow="true">Write</permission>
+							</permissions>
 			        		<evaluator>evaluator.pdftoolkit.doclib.action.pdfToolkitMimetype</evaluator>
 						</action>
 					</actions>
@@ -116,6 +125,9 @@
 			        		<param name="destination">{node.nodeRef}</param>
 			        		<param name="successMessage">message.pdf-encryption.success</param>
 			        		<param name="failureMessage">message.pdf-encryption.failure</param>
+							<permissions>
+								<permission allow="true">Write</permission>
+							</permissions>
 			        		<evaluator>evaluator.pdftoolkit.doclib.action.pdfToolkitMimetype</evaluator>
 						</action>
 					</actions>
@@ -148,6 +160,9 @@
 			        		<param name="destination">{node.nodeRef}</param>
 			        		<param name="successMessage">message.pdf-decryption.success</param>
 			        		<param name="failureMessage">message.pdf-decryption.failure</param>
+							<permissions>
+								<permission allow="true">Write</permission>
+							</permissions>
 			        		<evaluator>evaluator.pdftoolkit.doclib.action.pdfToolkitMimetype</evaluator>
 						</action>
 					</actions>
@@ -180,6 +195,9 @@
 			        		<param name="destination">{node.nodeRef}</param>
 			        		<param name="successMessage">message.pdf-insert-at-page.success</param>
 			        		<param name="failureMessage">message.pdf-insert-at-page.failure</param>
+							<permissions>
+								<permission allow="true">Write</permission>
+							</permissions>
 			        		<evaluator>evaluator.pdftoolkit.doclib.action.pdfToolkitMimetype</evaluator>
 						</action>
 					</actions>
@@ -212,6 +230,9 @@
 			        		<param name="destination">{node.nodeRef}</param>
 			        		<param name="successMessage">message.pdf-split.success</param>
 			        		<param name="failureMessage">message.pdf-split.failure</param>
+							<permissions>
+								<permission allow="true">Write</permission>
+							</permissions>
 			        		<evaluator>evaluator.pdftoolkit.doclib.action.pdfToolkitMimetype</evaluator>
 						</action>
 					</actions>
@@ -244,6 +265,9 @@
 			        		<param name="destination">{node.nodeRef}</param>
 			        		<param name="successMessage">message.pdf-split-at-page.success</param>
 			        		<param name="failureMessage">message.pdf-split-at-page.failure</param>
+							<permissions>
+								<permission allow="true">Write</permission>
+							</permissions>
 			        		<evaluator>evaluator.pdftoolkit.doclib.action.pdfToolkitMimetype</evaluator>
 						</action>
 					</actions>
@@ -277,6 +301,9 @@
 			        		<param name="destination">{node.nodeRef}</param>
 			        		<param name="successMessage">message.pdf-delete-page.success</param>
 			        		<param name="failureMessage">message.pdf-delete-page.failure</param>
+							<permissions>
+								<permission allow="true">Write</permission>
+							</permissions>
 			        		<evaluator>evaluator.pdftoolkit.doclib.action.pdfToolkitMimetype</evaluator>
 						</action>
 					</actions>
@@ -310,6 +337,9 @@
 			        		<param name="destination">{node.nodeRef}</param>
 			        		<param name="successMessage">message.pdf-extract-page.success</param>
 			        		<param name="failureMessage">message.pdf-extract-page.failure</param>
+							<permissions>
+								<permission allow="true">Write</permission>
+							</permissions>
 			        		<evaluator>evaluator.pdftoolkit.doclib.action.pdfToolkitMimetype</evaluator>
 						</action>
 					</actions>
@@ -343,6 +373,9 @@
 			        		<param name="destination">{node.nodeRef}</param>
 			        		<param name="successMessage">message.pdf-rotate.success</param>
 			        		<param name="failureMessage">message.pdf-rotate.failure</param>
+							<permissions>
+								<permission allow="true">Write</permission>
+							</permissions>
 			        		<evaluator>evaluator.pdftoolkit.doclib.action.pdfToolkitMimetype</evaluator>
 						</action>
 					</actions>
