@@ -27,9 +27,6 @@
 						</action>
 					</actions>
 					<actionGroups>
-						<actionGroup id="document-browse">
-							<action index="505" id="pdf-signature"/>
-						</actionGroup>
 						<actionGroup id="document-details">
 							<action index="505" id="pdf-signature"/>
 						</actionGroup>
@@ -62,9 +59,6 @@
 						</action>
 					</actions>
 					<actionGroups>
-						<actionGroup id="document-browse">
-							<action index="506" id="pdf-watermark"/>
-						</actionGroup>
 						<actionGroup id="document-details">
 							<action index="506" id="pdf-watermark"/>
 						</actionGroup>
@@ -97,9 +91,6 @@
 						</action>
 					</actions>
 					<actionGroups>
-						<actionGroup id="document-browse">
-							<action index="500" id="pdf-append"/>
-						</actionGroup>
 						<actionGroup id="document-details">
 							<action index="500" id="pdf-append"/>
 						</actionGroup>
@@ -132,9 +123,6 @@
 						</action>
 					</actions>
 					<actionGroups>
-						<actionGroup id="document-browse">
-							<action index="508" id="pdf-encryption"/>
-						</actionGroup>
 						<actionGroup id="document-details">
 							<action index="508" id="pdf-encryption"/>
 						</actionGroup>
@@ -167,9 +155,6 @@
 						</action>
 					</actions>
 					<actionGroups>
-						<actionGroup id="document-browse">
-							<action index="509" id="pdf-decryption"/>
-						</actionGroup>
 						<actionGroup id="document-details">
 							<action index="509" id="pdf-decryption"/>
 						</actionGroup>
@@ -202,9 +187,6 @@
 						</action>
 					</actions>
 					<actionGroups>
-						<actionGroup id="document-browse">
-							<action index="502" id="pdf-insert-at-page"/>
-						</actionGroup>
 						<actionGroup id="document-details">
 							<action index="502" id="pdf-insert-at-page"/>
 						</actionGroup>
@@ -237,9 +219,6 @@
 						</action>
 					</actions>
 					<actionGroups>
-						<actionGroup id="document-browse">
-							<action index="503" id="pdf-split"/>
-						</actionGroup>
 						<actionGroup id="document-details">
 							<action index="503" id="pdf-split"/>
 						</actionGroup>
@@ -272,9 +251,6 @@
 						</action>
 					</actions>
 					<actionGroups>
-						<actionGroup id="document-browse">
-							<action index="504" id="pdf-split-at-page"/>
-						</actionGroup>
 						<actionGroup id="document-details">
 							<action index="504" id="pdf-split-at-page"/>
 						</actionGroup>
@@ -308,9 +284,6 @@
 						</action>
 					</actions>
 					<actionGroups>
-						<actionGroup id="document-browse">
-							<action index="501" id="pdf-delete-page"/>
-						</actionGroup>
 						<actionGroup id="document-details">
 							<action index="501" id="pdf-delete-page"/>
 						</actionGroup>
@@ -344,9 +317,6 @@
 						</action>
 					</actions>
 					<actionGroups>
-						<actionGroup id="document-browse">
-							<action index="510" id="pdf-extract-page"/>
-						</actionGroup>
 						<actionGroup id="document-details">
 							<action index="510" id="pdf-extract-page"/>
 						</actionGroup>
@@ -380,9 +350,6 @@
 						</action>
 					</actions>
 					<actionGroups>
-						<actionGroup id="document-browse">
-							<action index="507" id="pdf-rotate"/>
-						</actionGroup>
 						<actionGroup id="document-details">
 							<action index="507" id="pdf-rotate"/>
 						</actionGroup>
