@@ -9,9 +9,9 @@
     <parent>
         <groupId>org.alfresco.extension</groupId>
         <artifactId>pdf-toolkit</artifactId>
-        <version>1.4.3</version>
+        <version>1.4.4</version>
     </parent>
-    
+
     <properties>
         <!-- Defines the target WAR artifactId to run this amp, only used with the -Pamp-to-war switch
         .    | Allowed values: alfresco | share. Defaults to a repository AMP, but could point to your custom corporate Alfresco WAR -->
@@ -22,7 +22,7 @@
         <!-- Defines the target WAR version to run this amp, only used with the -Pamp-to-war switch -->
         <!-- <alfresco.client.war.version>${alfresco.version}</alfresco.client.war.version> -->
     </properties>
-    
+
     <!--
     Following dependencies are needed for compiling Java code in src/main/java; <scope>provided</scope>
     is inherited for each of the following; for more info, please refer to alfresco-integration-parent
@@ -77,7 +77,7 @@
         	<scope>compile</scope>
       	</dependency>
     </dependencies>
-    
+
      <profiles>
 
         <!--
@@ -103,5 +103,5 @@
             </properties>
         </profile>
     </profiles>
-    
+
 </project>

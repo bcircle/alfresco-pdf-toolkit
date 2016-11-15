@@ -2,38 +2,38 @@
 
 <extension xmlns="http://www.springframework.org/extensions/surf/extensibility">
 	<modules>
-		<module>
-			<id>PDF Toolkit Actions UI - Signature</id>
-			<description>Expose the signature action doclib action UI</description>
-			<version>${project.version}</version>
-			<auto-deploy>true</auto-deploy>
-			<configurations>
-				<config evaluator="string-compare" condition="DocLibActions">
-					<actions>
-						<action id="pdf-signature"
-							type="javascript"
-							label="actions.pdftoolkit.signPDF">
-							<param name="function">onActionFormDialog</param>
-			        		<param name="itemKind">pdf-action</param>
-			        		<param name="itemId">pdf-signature</param>
-			        		<param name="mode">create</param>
-			        		<param name="destination">{node.nodeRef}</param>
-			        		<param name="successMessage">message.pdf-signature.success</param>
-			        		<param name="failureMessage">message.pdf-signature.failure</param>
-							<permissions>
-								<permission allow="true">Write</permission>
-							</permissions>
-			        		<evaluator>evaluator.pdftoolkit.doclib.action.pdfToolkitMimetype</evaluator>
-						</action>
-					</actions>
-					<actionGroups>
-						<actionGroup id="document-details">
-							<action index="505" id="pdf-signature"/>
-						</actionGroup>
-					</actionGroups>
-				</config>
-			</configurations>
-		</module>
+		<!--<module>-->
+			<!--<id>PDF Toolkit Actions UI - Signature</id>-->
+			<!--<description>Expose the signature action doclib action UI</description>-->
+			<!--<version>${project.version}</version>-->
+			<!--<auto-deploy>true</auto-deploy>-->
+			<!--<configurations>-->
+				<!--<config evaluator="string-compare" condition="DocLibActions">-->
+					<!--<actions>-->
+						<!--<action id="pdf-signature"-->
+							<!--type="javascript"-->
+							<!--label="actions.pdftoolkit.signPDF">-->
+							<!--<param name="function">onActionFormDialog</param>-->
+			        		<!--<param name="itemKind">pdf-action</param>-->
+			        		<!--<param name="itemId">pdf-signature</param>-->
+			        		<!--<param name="mode">create</param>-->
+			        		<!--<param name="destination">{node.nodeRef}</param>-->
+			        		<!--<param name="successMessage">message.pdf-signature.success</param>-->
+			        		<!--<param name="failureMessage">message.pdf-signature.failure</param>-->
+							<!--<permissions>-->
+								<!--<permission allow="true">Write</permission>-->
+							<!--</permissions>-->
+			        		<!--<evaluator>evaluator.pdftoolkit.doclib.action.pdfToolkitMimetype</evaluator>-->
+						<!--</action>-->
+					<!--</actions>-->
+					<!--<actionGroups>-->
+						<!--<actionGroup id="document-details">-->
+							<!--<action index="505" id="pdf-signature"/>-->
+						<!--</actionGroup>-->
+					<!--</actionGroups>-->
+				<!--</config>-->
+			<!--</configurations>-->
+		<!--</module>-->
 		<module>
 			<id>PDF Toolkit Actions UI - Watermark</id>
 			<description>Expose the watermark action doclib action UI</description>

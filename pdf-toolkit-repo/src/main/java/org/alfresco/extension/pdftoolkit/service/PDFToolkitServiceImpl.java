@@ -70,9 +70,9 @@ import com.itextpdf.text.pdf.PdfSignatureAppearance;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.PdfWriter;
 
-public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToolkitService 
+public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToolkitService
 {
-    
+
 	private ServiceRegistry serviceRegistry;
     private NodeService ns;
     private ContentService cs;
@@ -80,20 +80,20 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
     private DictionaryService ds;
     private PersonService ps;
     private AuthenticationService as;
-    
+
     private FreeMarkerProcessor freemarkerProcessor = new FreeMarkerProcessor();
-    
+
     private static Log logger = LogFactory.getLog(PDFToolkitServiceImpl.class);
-    
+
     // do we need to apply the encryption aspect when we encrypt?
     private boolean useEncryptionAspect = true;
-    
+
     // do we need to apply the signature aspect when we sign?
     private boolean useSignatureAspect = true;
-    
+
     // when we create a new document, do we actually create a new one, or copy the source?
     private boolean createNew = false;
-    
+
     @Override
     public NodeRef appendPDF(NodeRef targetNodeRef, Map<String, Serializable> params)
     {
@@ -104,23 +104,23 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
         File tempDir = null;
         ContentWriter writer = null;
         NodeRef destinationNode = null;
-        
+
         try
         {
         	NodeRef toAppend = (NodeRef)params.get(PARAM_TARGET_NODE);
         	Boolean inplace = Boolean.valueOf(String.valueOf(params.get(PARAM_INPLACE)));
         	ContentReader append = getReader(toAppend);
             is = append.getContentInputStream();
-            
+
             ContentReader targetReader = getReader(targetNodeRef);
             tis = targetReader.getContentInputStream();
-            
+
             String fileName = getFilename(params, targetNodeRef);
-            
+
             // stream the document in
             pdf = PDDocument.load(is);
             pdfTarget = PDDocument.load(tis);
-            
+
             // Append the PDFs
             PDFMergerUtility merger = new PDFMergerUtility();
             merger.appendDocument(pdfTarget, pdf);
@@ -132,7 +132,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
             File alfTempDir = TempFileProvider.getTempDir();
             tempDir = new File(alfTempDir.getPath() + File.separatorChar + targetNodeRef.getId());
             tempDir.mkdir();
-            
+
             pdfTarget.save(tempDir + "" + File.separatorChar + fileName);
 
             for (File file : tempDir.listFiles())
@@ -142,10 +142,10 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
                     if (file.isFile())
                     {
                         // Get a writer and prep it for putting it back into the repo
-                        destinationNode = createDestinationNode(fileName, 
+                        destinationNode = createDestinationNode(fileName,
                         		(NodeRef)params.get(PARAM_DESTINATION_FOLDER), targetNodeRef, inplace);
                         writer = cs.getWriter(destinationNode, ContentModel.PROP_CONTENT, true);
-                        
+
                         writer.setEncoding(targetReader.getEncoding()); // original
                                                                   // encoding
                         writer.setMimetype(FILE_MIMETYPE);
@@ -213,19 +213,19 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
                 tempDir.delete();
             }
         }
-        
+
         return destinationNode;
     }
-    
+
 	@Override
-	public NodeRef encryptPDF(NodeRef targetNodeRef, Map<String, Serializable> params) 
+	public NodeRef encryptPDF(NodeRef targetNodeRef, Map<String, Serializable> params)
 	{
 		PdfStamper stamp = null;
         File tempDir = null;
         ContentWriter writer = null;
         ContentReader targetReader = null;
         NodeRef destinationNode = null;
-        
+
         try
         {
             // get the parameters
@@ -257,9 +257,9 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
             stamp.close();
 
             String fileName = getFilename(params, targetNodeRef);
-            
+
             // write out to destination
-            destinationNode = createDestinationNode(fileName, 
+            destinationNode = createDestinationNode(fileName,
             		(NodeRef)params.get(PARAM_DESTINATION_FOLDER), targetNodeRef, inplace);
             writer = cs.getWriter(destinationNode, ContentModel.PROP_CONTENT, true);
 
@@ -267,7 +267,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
             writer.setMimetype(FILE_MIMETYPE);
             writer.putContent(file);
             file.delete();
-            
+
             //if useAspect is true, store some additional info about the signature in the props
             if(useEncryptionAspect)
             {
@@ -275,7 +275,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
             	ns.setProperty(destinationNode, PDFToolkitModel.PROP_ENCRYPTIONDATE, new java.util.Date());
             	ns.setProperty(destinationNode, PDFToolkitModel.PROP_ENCRYPTEDBY, AuthenticationUtil.getRunAsUser());
             }
-            
+
         }
         catch (IOException e)
         {
@@ -311,11 +311,11 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
                 }
             }
         }
-        
+
         return destinationNode;
 	}
 
-	@Override 
+	@Override
 	public NodeRef decryptPDF(NodeRef targetNodeRef, Map<String, Serializable> params)
 	{
 		PdfStamper stamp = null;
@@ -323,7 +323,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
         ContentWriter writer = null;
         ContentReader targetReader = null;
         NodeRef destinationNode = null;
-        
+
         try
         {
             // get the parameters
@@ -343,9 +343,9 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
             stamp.close();
 
             String fileName = getFilename(params, targetNodeRef);
-            
+
             // write out to destination
-            destinationNode = createDestinationNode(fileName, 
+            destinationNode = createDestinationNode(fileName,
             		(NodeRef)params.get(PARAM_DESTINATION_FOLDER), targetNodeRef, inplace);
             writer = cs.getWriter(destinationNode, ContentModel.PROP_CONTENT, true);
 
@@ -353,7 +353,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
             writer.setMimetype(FILE_MIMETYPE);
             writer.putContent(file);
             file.delete();
-            
+
             //if useAspect is true, store some additional info about the signature in the props
             if(useEncryptionAspect)
             {
@@ -394,12 +394,12 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
                 }
             }
         }
-        
+
         return destinationNode;
 	}
-	
+
 	@Override
-	public NodeRef signPDF(NodeRef targetNodeRef, Map<String, Serializable> params) 
+	public NodeRef signPDF(NodeRef targetNodeRef, Map<String, Serializable> params)
 	{
 		NodeRef privateKey = (NodeRef)params.get(PARAM_PRIVATE_KEY);
 		String location = (String)params.get(PARAM_LOCATION);
@@ -411,14 +411,14 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 		int height = getInteger(params.get(PARAM_HEIGHT));
 		int width = getInteger(params.get(PARAM_WIDTH));
 		int pageNumber = getInteger(params.get(PARAM_PAGE));
-		
+
 		// By default, append the signature as a new PDF revision to avoid
 		// invalidating any signatures that might already exist on the doc
 		boolean appendToExisting = true;
 		if (params.get(PARAM_NEW_REVISION) != null) {
 			appendToExisting = Boolean.valueOf(String.valueOf(params.get(PARAM_NEW_REVISION)));
 		}
-		
+
 		// New keystore parameters
 		String alias = (String)params.get(PARAM_ALIAS);
 		String storePassword = (String)params.get(PARAM_STORE_PASSWORD);
@@ -433,7 +433,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 		KeyStore ks = null;
 
 		NodeRef destinationNode = null;
-		
+
 		try
 		{
 			// get a keystore instance by
@@ -476,13 +476,13 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 				pageNumber = numPages + 1 + pageNumber;
 				if (pageNumber <= 0) pageNumber = 1;
 			}
-			
+
 			// if the page number specified is more than the num of pages,
 			// use the last page
 			if (pageNumber > numPages) {
 				pageNumber = numPages;
 			}
-			
+
 			// create temp dir to store file
 			File alfTempDir = TempFileProvider.getTempDir();
 			tempDir = new File(alfTempDir.getPath() + File.separatorChar + targetNodeRef.getId());
@@ -490,7 +490,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 			File file = new File(tempDir, ffs.getFileInfo(targetNodeRef).getName());
 
 			FileOutputStream fout = new FileOutputStream(file);
-			
+
 			// When adding a second signature, append must be called on PdfStamper.createSignature
 			// to avoid invalidating previous signatures
 			PdfStamper stamp = null;
@@ -505,12 +505,12 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 			// set reason for signature and location of signer
 			sap.setReason(reason);
 			sap.setLocation(location);
-	
+
 			if (visibility.equalsIgnoreCase(VISIBILITY_VISIBLE))
 			{
 				//create the signature rectangle using either the provided position or
 				//the exact coordinates, if provided
-				if(position != null && !position.trim().equalsIgnoreCase("") 
+				if(position != null && !position.trim().equalsIgnoreCase("")
 						&& !position.trim().equalsIgnoreCase(POSITION_MANUAL))
 				{
 					Rectangle pageRect = reader.getPageSizeWithRotation(pageNumber);
@@ -526,7 +526,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 
 			String fileName = getFilename(params, targetNodeRef);
 
-			destinationNode = createDestinationNode(fileName, 
+			destinationNode = createDestinationNode(fileName,
 					(NodeRef)params.get(PARAM_DESTINATION_FOLDER), targetNodeRef, inplace);
 			writer = cs.getWriter(destinationNode, ContentModel.PROP_CONTENT, true);
 
@@ -589,20 +589,20 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 				}
 			}
 		}
-		
+
 		return destinationNode;
 	}
 
 	@Override
-	public NodeRef watermarkPDF(NodeRef targetNodeRef, Map<String, Serializable> params) 
+	public NodeRef watermarkPDF(NodeRef targetNodeRef, Map<String, Serializable> params)
 	{
 
 		NodeRef destinationNode = null;
-		
+
         try
         {
         	ContentReader targetReader = getReader(targetNodeRef);
-        	
+
             if (params.get(PARAM_WATERMARK_TYPE) != null
                 && params.get(PARAM_WATERMARK_TYPE).equals(TYPE_IMAGE))
             {
@@ -622,25 +622,25 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
         {
             throw new AlfrescoRuntimeException(e.getMessage(), e);
         }
-        
+
         return destinationNode;
 	}
 
 	@Override
-	public NodeRef splitPDF(NodeRef targetNodeRef, Map<String, Serializable> params) 
+	public NodeRef splitPDF(NodeRef targetNodeRef, Map<String, Serializable> params)
 	{
         PDDocument pdf = null;
         InputStream is = null;
         File tempDir = null;
         ContentWriter writer = null;
         NodeRef destinationFolder;
-        
+
         try
         {
         	destinationFolder = (NodeRef)params.get(PARAM_DESTINATION_FOLDER);
-        	
+
         	ContentReader targetReader = getReader(targetNodeRef);
-        	
+
             // Get the split frequency
             int splitFrequency = 0;
 
@@ -733,10 +733,10 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 
                         // Get a writer and prep it for putting it back into the
                         // repo
-                        NodeRef destinationNode = createDestinationNode(file.getName(), 
+                        NodeRef destinationNode = createDestinationNode(file.getName(),
                         		destinationFolder, targetNodeRef, false);
                         writer = cs.getWriter(destinationNode, ContentModel.PROP_CONTENT, true);
-                        
+
                         writer.setEncoding(targetReader.getEncoding()); // original
                                                                   // encoding
                         writer.setMimetype(FILE_MIMETYPE);
@@ -793,12 +793,12 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
                 tempDir.delete();
             }
         }
-        
+
         return destinationFolder;
 	}
 
 	@Override
-	public NodeRef splitPDFAtPage(NodeRef targetNodeRef, Map<String, Serializable> params) 
+	public NodeRef splitPDFAtPage(NodeRef targetNodeRef, Map<String, Serializable> params)
 	{
 		PDDocument pdf = null;
 		InputStream is = null;
@@ -935,7 +935,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 					{
 						// Get a writer and prep it for putting it back into the
 						// repo
-						NodeRef destinationNode = createDestinationNode(file.getName(), 
+						NodeRef destinationNode = createDestinationNode(file.getName(),
 								destinationFolder, targetNodeRef, false);
 						writer = cs.getWriter(destinationNode, ContentModel.PROP_CONTENT, true);
 
@@ -999,7 +999,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 	}
 
 	@Override
-	public NodeRef insertPDF(NodeRef targetNodeRef, Map<String, Serializable> params) 
+	public NodeRef insertPDF(NodeRef targetNodeRef, Map<String, Serializable> params)
 	{
 		PDDocument pdf = null;
         PDDocument insertContentPDF = null;
@@ -1008,15 +1008,18 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
         File tempDir = null;
         ContentWriter writer = null;
         NodeRef destinationNode = null;
-        
+
+        logger.debug("insertPDF");
         try
         {
 
+            logger.debug(targetNodeRef);
+            logger.debug(params);
         	ContentReader targetReader = getReader(targetNodeRef);
-        	ContentReader insertReader = getReader((NodeRef)params.get(PARAM_TARGET_NODE));
+        	ContentReader insertReader = getReader((NodeRef)params.get(PARAM_INSERT_CONTENT));
             int insertAt = Integer.valueOf((String)params.get(PARAM_PAGE)).intValue();
             Boolean inplace = Boolean.valueOf(String.valueOf(params.get(PARAM_INPLACE)));
-            
+
             // Get contentReader inputStream
             is = targetReader.getContentInputStream();
             // Get insertContentReader inputStream
@@ -1034,18 +1037,18 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 
             // Build the output PDF
             PDFMergerUtility merger = new PDFMergerUtility();
-            
+
             PDDocument newDocument = new PDDocument();
-            
+
             for (int i = 0; i < pdfs.size(); i++) {
-            	
+
             	if (i == insertAt -1) {
             		merger.appendDocument(newDocument, insertContentPDF);
             	}
-            	
+
             	merger.appendDocument(newDocument, (PDDocument)pdfs.get(i));
             }
-            
+
             merger.setDestinationFileName(params.get(PARAM_DESTINATION_NAME).toString());
             merger.mergeDocuments();
 
@@ -1056,7 +1059,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
             tempDir.mkdir();
 
             String fileName = params.get(PARAM_DESTINATION_NAME).toString();
-            
+
             PDDocument completePDF = newDocument;
 
             completePDF.save(tempDir + "" + File.separatorChar + fileName + FILE_EXTENSION);
@@ -1068,6 +1071,8 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
             }
             catch (IOException e)
             {
+                logger.error(e.getMessage());
+                logger.error(e.getStackTrace());
                 throw new AlfrescoRuntimeException(e.getMessage(), e);
             }
 
@@ -1080,10 +1085,10 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 
                         // Get a writer and prep it for putting it back into the
                         // repo
-                        destinationNode = createDestinationNode(file.getName(), 
+                        destinationNode = createDestinationNode(file.getName(),
                         		(NodeRef)params.get(PARAM_DESTINATION_FOLDER), targetNodeRef, inplace);
                         writer = cs.getWriter(destinationNode, ContentModel.PROP_CONTENT, true);
-                        
+
                         writer.setEncoding(targetReader.getEncoding()); // original
                         // encoding
                         writer.setMimetype(FILE_MIMETYPE);
@@ -1097,6 +1102,8 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
                 }
                 catch (FileExistsException e)
                 {
+                    logger.error(e.getMessage());
+                    logger.error(e.getStackTrace());
                     throw new AlfrescoRuntimeException("Failed to process file.", e);
                 }
             }
@@ -1104,10 +1111,19 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
         // TODO add better handling
         catch (COSVisitorException e)
         {
+            logger.error(e.getMessage());
+            logger.error(e.getStackTrace());
             throw new AlfrescoRuntimeException(e.getMessage(), e);
         }
         catch (IOException e)
         {
+            logger.error(e.getMessage());
+            logger.error(e.getStackTrace());
+            throw new AlfrescoRuntimeException(e.getMessage(), e);
+        }
+        catch (Exception e) {
+            logger.error(e.getMessage());
+            logger.error(e.getStackTrace());
             throw new AlfrescoRuntimeException(e.getMessage(), e);
         }
 
@@ -1121,6 +1137,8 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
                 }
                 catch (IOException e)
                 {
+                    logger.debug(e.getMessage());
+                    logger.debug(e.getStackTrace());
                     throw new AlfrescoRuntimeException(e.getMessage(), e);
                 }
             }
@@ -1132,6 +1150,8 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
                 }
                 catch (IOException e)
                 {
+                    logger.debug(e.getMessage());
+                    logger.debug(e.getStackTrace());
                     throw new AlfrescoRuntimeException(e.getMessage(), e);
                 }
             }
@@ -1141,33 +1161,33 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
                 tempDir.delete();
             }
         }
-        
+
         return destinationNode;
     }
 
 	@Override
-	public NodeRef deletePagesFromPDF(NodeRef targetNodeRef, Map<String, Serializable> params) 
+	public NodeRef deletePagesFromPDF(NodeRef targetNodeRef, Map<String, Serializable> params)
 	{
 		String pages = String.valueOf(params.get(PARAM_PAGE));
 		return subsetPDFDocument(targetNodeRef, params, pages, true);
 	}
 
 	@Override
-	public NodeRef extractPagesFromPDF(NodeRef targetNodeRef, Map<String, Serializable> params) 
+	public NodeRef extractPagesFromPDF(NodeRef targetNodeRef, Map<String, Serializable> params)
 	{
 		String pages = String.valueOf(params.get(PARAM_PAGE));
 		return subsetPDFDocument(targetNodeRef, params, pages, false);
 	}
 
 	@Override
-	public NodeRef rotatePDF(NodeRef targetNodeRef, Map<String, Serializable> params) 
+	public NodeRef rotatePDF(NodeRef targetNodeRef, Map<String, Serializable> params)
 	{
 		InputStream is = null;
         File tempDir = null;
         ContentWriter writer = null;
         PdfReader pdfReader = null;
         NodeRef destinationNode = null;
-        
+
         try
         {
         	ContentReader targetReader = getReader(targetNodeRef);
@@ -1176,27 +1196,27 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
             File alfTempDir = TempFileProvider.getTempDir();
             tempDir = new File(alfTempDir.getPath() + File.separatorChar + targetNodeRef.getId());
             tempDir.mkdir();
-            
+
             Boolean inplace = Boolean.valueOf(String.valueOf(params.get(PARAM_INPLACE)));
             Integer degrees = Integer.valueOf(String.valueOf(params.get(PARAM_DEGREES)));
             String pages = String.valueOf(params.get(PARAM_PAGE));
-            
+
             if(degrees % 90 != 0)
             {
             	throw new AlfrescoRuntimeException("Rotation degres must be a multiple of 90 (90, 180, 270, etc)");
             }
-            
+
             String fileName = getFilename(params, targetNodeRef);
-            
+
             File file = new File(tempDir, ffs.getFileInfo(targetNodeRef).getName());
 
             pdfReader = new PdfReader(is);
             PdfStamper stamp = new PdfStamper(pdfReader, new FileOutputStream(file));
-            
+
             int rotation = 0;
             PdfDictionary pageDictionary;
             int numPages = pdfReader.getNumberOfPages();
-            for (int pageNum = 1; pageNum <= numPages; pageNum++) 
+            for (int pageNum = 1; pageNum <= numPages; pageNum++)
             {
                 // only apply stamp to requested pages
                 if (checkPage(pages, pageNum, numPages))
@@ -1206,11 +1226,11 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
                     pageDictionary.put(PdfName.ROTATE, new PdfNumber(rotation + degrees));
                 }
             }
-            
+
             stamp.close();
             pdfReader.close();
 
-            destinationNode = createDestinationNode(fileName, 
+            destinationNode = createDestinationNode(fileName,
             		(NodeRef)params.get(PARAM_DESTINATION_FOLDER), targetNodeRef, inplace);
             writer = cs.getWriter(destinationNode, ContentModel.PROP_CONTENT, true);
 
@@ -1227,8 +1247,8 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
         catch (IOException e)
         {
             throw new AlfrescoRuntimeException(e.getMessage(), e);
-        } 
-        catch (DocumentException e) 
+        }
+        catch (DocumentException e)
         {
 			throw new AlfrescoRuntimeException(e.getMessage(), e);
 		}
@@ -1262,39 +1282,39 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
         return destinationNode;
 	}
 
-	private NodeRef subsetPDFDocument(NodeRef targetNodeRef, Map<String, Serializable> params, String pages, boolean delete) 
+	private NodeRef subsetPDFDocument(NodeRef targetNodeRef, Map<String, Serializable> params, String pages, boolean delete)
 	{
 		InputStream is = null;
 	    File tempDir = null;
 	    ContentWriter writer = null;
 	    PdfReader pdfReader = null;
 	    NodeRef destinationNode = null;
-	    
+
 	    try
 	    {
 	    	ContentReader targetReader = getReader(targetNodeRef);
 	        is = targetReader.getContentInputStream();
-	
+
 	        File alfTempDir = TempFileProvider.getTempDir();
 	        tempDir = new File(alfTempDir.getPath() + File.separatorChar + targetNodeRef.getId());
 	        tempDir.mkdir();
-	        
+
 	        Boolean inplace = Boolean.valueOf(String.valueOf(params.get(PARAM_INPLACE)));
-	        
+
 	        String fileName = getFilename(params, targetNodeRef);
-	        
+
 	        File file = new File(tempDir, ffs.getFileInfo(targetNodeRef).getName());
-	
+
 	        pdfReader = new PdfReader(is);
 	        Document doc = new Document(pdfReader.getPageSizeWithRotation(1));
 	        PdfCopy copy = new PdfCopy(doc, new FileOutputStream(file));
 	        doc.open();
-	
+
 	        List<Integer> pagelist = parsePageList(pages);
-	        
-	        for (int pageNum = 1; pageNum <= pdfReader.getNumberOfPages(); pageNum++) 
+
+	        for (int pageNum = 1; pageNum <= pdfReader.getNumberOfPages(); pageNum++)
 	        {
-	        	if (pagelist.contains(pageNum) && !delete) 
+	        	if (pagelist.contains(pageNum) && !delete)
 	        	{
 	        		copy.addPage(copy.getImportedPage(pdfReader, pageNum));
 	        	}
@@ -1304,26 +1324,26 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 	        	}
 	        }
 	        doc.close();
-	
-	        destinationNode = createDestinationNode(fileName, 
+
+	        destinationNode = createDestinationNode(fileName,
 	        		(NodeRef)params.get(PARAM_DESTINATION_FOLDER), targetNodeRef, inplace);
 	        writer = cs.getWriter(destinationNode, ContentModel.PROP_CONTENT, true);
-	
+
 	        writer.setEncoding(targetReader.getEncoding());
 	        writer.setMimetype(FILE_MIMETYPE);
-	
+
 	        // Put it in the repository
 	        writer.putContent(file);
-	
+
 	        // Clean up
 	        file.delete();
-	
+
 	    }
 	    catch (IOException e)
 	    {
 	        throw new AlfrescoRuntimeException(e.getMessage(), e);
-	    } 
-	    catch (DocumentException e) 
+	    }
+	    catch (DocumentException e)
 	    {
 			throw new AlfrescoRuntimeException(e.getMessage(), e);
 		}
@@ -1348,7 +1368,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 	                throw new AlfrescoRuntimeException(e.getMessage(), e);
 	            }
 	        }
-	
+
 	        if (tempDir != null)
 	        {
 	            tempDir.delete();
@@ -1365,7 +1385,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
             // node doesn't exist - can't do anything
             throw new AlfrescoRuntimeException("NodeRef: " + nodeRef + " does not exist");
         }
-		
+
         // Next check that the node is a sub-type of content
         QName typeQName = ns.getType(nodeRef);
         if (ds.isSubClass(typeQName, ContentModel.TYPE_CONTENT) == false)
@@ -1381,7 +1401,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
         {
         	throw new AlfrescoRuntimeException("The content reader for NodeRef: " + nodeRef + "is null");
         }
-        
+
         return contentReader;
     }
 
@@ -1394,14 +1414,14 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
     {
 
     	NodeRef destinationNode;
-    	
+
     	// if inplace mode is turned on, the destination for the modified content
     	// is the original node
     	if(inplace)
     	{
     		return target;
     	}
-    	
+
     	if(createNew)
     	{
 	    	//create a file in the right location
@@ -1410,7 +1430,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
     	}
     	else
     	{
-    		try 
+    		try
     		{
 	    		FileInfo fileInfo = ffs.copy(target, destinationParent, filename);
 	    		destinationNode = fileInfo.getNodeRef();
@@ -1423,11 +1443,11 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 
         return destinationNode;
     }
-    
+
     private int getInteger(Serializable val)
     {
     	if(val == null)
-    	{ 
+    	{
     		return 0;
     	}
     	try
@@ -1439,17 +1459,17 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
     		return 0;
     	}
     }
-    
+
     private File getTempFile(NodeRef nodeRef)
     {
     	File alfTempDir = TempFileProvider.getTempDir();
         File toolkitTempDir = new File(alfTempDir.getPath() + File.separatorChar + nodeRef.getId());
         toolkitTempDir.mkdir();
         File file = new File(toolkitTempDir, ffs.getFileInfo(nodeRef).getName());
-        
+
         return file;
     }
-    
+
     private String getFilename(Map<String, Serializable> params, NodeRef targetNodeRef)
     {
     	Serializable providedName = params.get(PARAM_DESTINATION_NAME);
@@ -1468,10 +1488,10 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
         }
         return fileName;
     }
-    
+
     /**
-	 * Parses the list of pages or page ranges to delete and returns a list of page numbers 
-	 * 
+	 * Parses the list of pages or page ranges to delete and returns a list of page numbers
+	 *
 	 * @param list
 	 * @return
 	 */
@@ -1482,7 +1502,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 		for(String token : tokens)
 		{
 			//parse each, if one is not an int, log it but keep going
-			try 
+			try
 			{
 				pages.add(Integer.parseInt(token));
 			}
@@ -1493,10 +1513,10 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 		}
 		return pages;
 	}
-	
+
     /**
      * Build the permissions mask for iText
-     * 
+     *
      * @param options
      * @return
      */
@@ -1539,10 +1559,10 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 
         return permissions;
     }
-    
+
     /**
      * Create a rectangle for the visible signature using the selected position and signature size
-     * 
+     *
      * @param position
      * @param width
      * @param height
@@ -1553,9 +1573,9 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 
     	float pageHeight = pageRect.getHeight();
     	float pageWidth = pageRect.getWidth();
-    	
+
     	Rectangle r = null;
-    	
+
     	if (position.equals(POSITION_BOTTOMLEFT))
     	{
     		r = new Rectangle(0, height, width, 0);
@@ -1580,7 +1600,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 
     	return r;
     }
-    
+
     /**
      * @param fileName
      * @param extension
@@ -1615,10 +1635,10 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 
         return filenameSansExt;
     }
-    
+
     /**
      * Applies an image watermark
-     * 
+     *
      * @param reader
      * @param writer
      * @param options
@@ -1632,7 +1652,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
         File tempDir = null;
         ContentWriter writer = null;
         NodeRef destinationNode = null;
-        
+
         try
         {
             File file = getTempFile(targetNodeRef);
@@ -1654,7 +1674,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
             // get the manual positioning options (if provided)
             int locationX = getInteger(options.get(PARAM_LOCATION_X));
             int locationY = getInteger(options.get(PARAM_LOCATION_Y));
-            
+
             // image requires absolute positioning or an exception will be
             // thrown
             // set image position according to parameter. Use
@@ -1712,15 +1732,15 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
             }
 
             stamp.close();
-            
+
             String fileName = getFilename(options, targetNodeRef);
-            
+
             // Get a writer and prep it for putting it back into the repo
             //can't use BasePDFActionExecuter.getWriter here need the nodeRef of the destination
-            destinationNode = createDestinationNode(fileName, 
+            destinationNode = createDestinationNode(fileName,
             		(NodeRef)options.get(PARAM_DESTINATION_FOLDER), targetNodeRef, inplace);
             writer = cs.getWriter(destinationNode, ContentModel.PROP_CONTENT, true);
-            
+
             writer.setEncoding(actionedUponContentReader.getEncoding());
             writer.setMimetype(FILE_MIMETYPE);
 
@@ -1764,7 +1784,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
                 }
             }
         }
-        
+
         return destinationNode;
     }
 
@@ -1772,7 +1792,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
     /**
      * Applies a text watermark (current date, user name, etc, depending on
      * options)
-     * 
+     *
      * @param reader
      * @param writer
      * @param options
@@ -1787,7 +1807,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
         StringTokenizer st;
         Vector<String> tokens = new Vector<String>();
         NodeRef destinationNode = null;
-        
+
         try
         {
             File file = getTempFile(targetNodeRef);
@@ -1854,10 +1874,10 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
             stamp.close();
 
             String fileName = getFilename(options, targetNodeRef);
-            
+
             // Get a writer and prep it for putting it back into the repo
             //can't use BasePDFActionExecuter.getWriter here need the nodeRef of the destination
-            destinationNode = createDestinationNode(fileName, 
+            destinationNode = createDestinationNode(fileName,
             		(NodeRef)options.get(PARAM_DESTINATION_FOLDER), targetNodeRef, inplace);
             writer = cs.getWriter(destinationNode, ContentModel.PROP_CONTENT, true);
             writer.setEncoding(actionedUponContentReader.getEncoding());
@@ -1903,21 +1923,21 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
                 }
             }
         }
-        
+
         return destinationNode;
     }
 
 
     /**
      * Writes text watermark to one of the 5 preconfigured locations
-     * 
+     *
      * @param pcb
      * @param r
      * @param tokens
      * @param size
      * @param position
      */
-    private void writeAlignedText(PdfContentByte pcb, Rectangle r, Vector<String> tokens, float size, 
+    private void writeAlignedText(PdfContentByte pcb, Rectangle r, Vector<String> tokens, float size,
     		String position, int locationX, int locationY)
     {
         // get the dimensions of our 'rectangle' for text
@@ -1980,7 +2000,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 
     /**
      * Builds a freemarker model which supports a subset of the default model.
-     * 
+     *
      * @param ref
      * @return
      */
@@ -1999,13 +2019,13 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 
         //also add all of the node properties to the model
         model.put("properties", ns.getProperties(ref));
-        
+
         return model;
     }
-    
+
     /**
      * Determines whether or not a watermark should be applied to a given page
-     * 
+     *
      * @param pages
      * @param current
      * @param numpages
@@ -2014,7 +2034,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
     private boolean checkPage(String pages, int current, int numpages)
     {
 
-    	
+
         boolean markPage = false;
 
         if (pages.equals(PAGE_EVEN))
@@ -2064,7 +2084,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 
     /**
      * Gets the X value for centering the watermark image
-     * 
+     *
      * @param r
      * @param img
      * @return
@@ -2082,7 +2102,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 
     /**
      * Gets the Y value for centering the watermark image
-     * 
+     *
      * @param r
      * @param img
      * @return
@@ -2097,7 +2117,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
 
         return y;
     }
-    
+
     /**
      * @param serviceRegistry
      */
@@ -2111,23 +2131,23 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
         ps = serviceRegistry.getPersonService();
         as = serviceRegistry.getAuthenticationService();
     }
-    
+
     /**
      * Sets whether a PDF action creates a new empty node or copies the source node, preserving
      * the content type, applied aspects and properties
-     * 
+     *
      * @param createNew
      */
     public void setCreateNew(boolean createNew)
     {
     	this.createNew = createNew;
     }
-    
+
     public void setUseSignatureAspect(boolean useSignatureAspect)
     {
     	this.useSignatureAspect = useSignatureAspect;
     }
-    
+
     public void setUseEncryptionAspect(boolean useEncryptionAspect)
     {
     	this.useEncryptionAspect = useEncryptionAspect;

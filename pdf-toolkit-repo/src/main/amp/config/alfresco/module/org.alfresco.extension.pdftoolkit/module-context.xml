@@ -2,16 +2,18 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-	
+
+	<bean id="unserializerValidatorBootstrap" abstract="true"/>
+
 	<!-- Bean action definitions -->
 	<import resource="classpath:alfresco/module/org.alfresco.extension.pdftoolkit/context/alfresco-pdf-toolkit-context.xml" />
-	
+
 	<!--  iText transformers -->
 	<import resource="classpath:alfresco/module/org.alfresco.extension.pdftoolkit/context/service-context.xml" />
 
 	<!-- form overrides -->
 	<import resource="classpath:alfresco/module/org.alfresco.extension.pdftoolkit/context/custom-form-services-context.xml" />
-	
+
 	<!-- load the custom content model -->
 	<bean id="pdftoolkit-model" parent="dictionaryModelBootstrap" depends-on="dictionaryBootstrap">
 		<property name="models">
@@ -20,7 +22,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<!-- The strings -->
 	<bean id="pdftoolkit-messages" class="org.alfresco.i18n.ResourceBundleBootstrapComponent">
 		<property name="resourceBundles">
@@ -29,7 +31,7 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean id="bootstrapExtraBundlesBean" class="org.alfresco.web.app.ResourceBundleBootstrap">
 		<property name="resourceBundles">
 			<list>
@@ -37,11 +39,11 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<!-- constraints for the various types -->
-	<!-- In these constraints, the key is the value that will be set for the parameter, the 
+	<!-- In these constraints, the key is the value that will be set for the parameter, the
 	"value" is the display text for the resulting select box -->
-	
+
 	<!-- visibility constraint is used by digital signatures, indicates whether sig is visible after application -->
 	<bean id="pdfc-visibility" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
 		<property name="constraintMap">
@@ -50,8 +52,8 @@
 				<entry key="visible" value="Visible"/>
 			</map>
 		</property>
-	</bean>    
-	
+	</bean>
+
 	<!-- key type constraint is used by digital signatures -->
 	<bean id="pdfc-keytype" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
 		<property name="constraintMap">
@@ -61,7 +63,7 @@
 			</map>
 		</property>
 	</bean>
-	
+
 	<!-- encryption level constraint, used by the encryption action -->
 	<bean id="pdfc-encryptionlevel" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
 		<property name="constraintMap">
@@ -72,7 +74,7 @@
 			</map>
 		</property>
 	</bean>
-	
+
 	<!-- page constraint, used by watermark action -->
 	<bean id="pdfc-page" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
 		<property name="constraintMap">
@@ -85,7 +87,7 @@
 			</map>
 		</property>
 	</bean>
-	
+
 	<!--  position constraint, used by watermark and digital signature actions -->
 	<bean id="pdfc-position" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
 		<property name="constraintMap">
@@ -99,7 +101,7 @@
 			</map>
 		</property>
 	</bean>
-	
+
 	<!-- font constraint, used in applying text watermarks -->
 	<bean id="pdfc-font" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
 		<property name="constraintMap">
@@ -110,7 +112,7 @@
 			</map>
 		</property>
 	</bean>
-	
+
 	<!-- depth constraint, used by watermark action, indicates whether applied above or below page content -->
 	<bean id="pdfc-depth" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
 		<property name="constraintMap">
@@ -120,7 +122,7 @@
 			</map>
 		</property>
 	</bean>
-	
+
 	<!-- font size constraint, used by text watermarks -->
 	<bean id="pdfc-fontsize" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
 		<property name="constraintMap">
@@ -136,7 +138,7 @@
 			</map>
 		</property>
 	</bean>
-	
+
 	<!-- watermark type constraint, used by the watermark action -->
 	<bean id="pdfc-watermarktype" class="org.alfresco.extension.pdftoolkit.constraints.MapConstraint" parent="action-constraint">
 		<property name="constraintMap">
@@ -156,8 +158,8 @@
 				<entry key="4" value="PDFA1B"/>
 			</map>
 		</property>
-	</bean>  
-    
+	</bean>
+
     <bean id="pdftoolkit.properties" parent="common-placeholder-configurer">
         <property name="locations">
             <list>
