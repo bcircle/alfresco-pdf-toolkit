@@ -13,20 +13,20 @@
 			</removeable>
 		</aspects>
 	</config>
-	
+
 	<!--  Configure forms for pdft:signed aspect in Share -->
-	<config evaluator="aspect" condition="pdft:signed"> 
+	<config evaluator="aspect" condition="pdft:signed">
 		<forms>
        		<form>
 	            <field-visibility>
 					<show id="pdft:signaturedate" />
-					<show id="pdft:reason" /> 
-					<show id="pdft:location" /> 
+					<show id="pdft:reason" />
+					<show id="pdft:location" />
 					<show id="pdft:signedby" />
-				</field-visibility> 
+				</field-visibility>
 				<appearance>
 					<field id="pdft:signaturedate" label-id="prop.pdft_signaturedate" />
-					<field id="pdft:reason" label-id="prop.pdft_reason" /> 
+					<field id="pdft:reason" label-id="prop.pdft_reason" />
 					<field id="pdft:location" label-id="prop.pdft_location" />
 					<field id="pdft:signedby" label-id="prop.pdft_signedby" />
 				</appearance>
@@ -35,33 +35,33 @@
 	</config>
 
 	<!--  Configure forms for pdft:encrpyted aspect in Share -->
-	<config evaluator="aspect" condition="pdft:encrypted"> 
+	<config evaluator="aspect" condition="pdft:encrypted">
 		<forms>
        		<form>
 	            <field-visibility>
 					<show id="pdft:encryptiondate" />
-					<show id="pdft:encryptedby" /> 
-				</field-visibility> 
+					<show id="pdft:encryptedby" />
+				</field-visibility>
 				<appearance>
 					<field id="pdft:encryptiondate" label-id="prop.pdft_encryptiondate" />
-					<field id="pdft:encryptedby" label-id="prop.pdft_encryptedby" /> 
+					<field id="pdft:encryptedby" label-id="prop.pdft_encryptedby" />
 				</appearance>
 			</form>
 		</forms>
 	</config>
-	
+
 	<!-- Configure advanced search for pdft:signed aspect in Share -->
-	<config evaluator="string-compare" condition="AdvancedSearch">
-	    <advanced-search>
-	        <forms>
-	            <form labelId="pdftoolkit.aspect.signed.search.type" 
-	            	descriptionId="pdftoolkit.aspect.signed.search.description" id="signedpdfsearch">cm:content</form>
-	            <form labelId="pdftoolkit.aspect.encrypted.search.type" 
-	            	descriptionId="pdftoolkit.aspect.encrypted.search.description" id="encryptedpdfsearch">cm:content</form>
-	        </forms>
-	    </advanced-search>
-	</config>
-	
+	<!--<config evaluator="string-compare" condition="AdvancedSearch">-->
+	    <!--<advanced-search>-->
+	        <!--<forms>-->
+	            <!--<form labelId="pdftoolkit.aspect.signed.search.type" -->
+	            	<!--descriptionId="pdftoolkit.aspect.signed.search.description" id="signedpdfsearch">cm:content</form>-->
+	            <!--<form labelId="pdftoolkit.aspect.encrypted.search.type" -->
+	            	<!--descriptionId="pdftoolkit.aspect.encrypted.search.description" id="encryptedpdfsearch">cm:content</form>-->
+	        <!--</forms>-->
+	    <!--</advanced-search>-->
+	<!--</config>-->
+
 	<!-- Advanced search form for items with pdft:signed aspect -->
 	<config evaluator="model-type" condition="cm:content">
     	<forms>
@@ -69,8 +69,8 @@
     		<form id="signedpdfsearch">
 				<field-visibility>
 					<show id="cm:name" force="true" />
-					<show id="cm:title" force="true" /> 
-					<show id="cm:description" force="true" /> 
+					<show id="cm:title" force="true" />
+					<show id="cm:description" force="true" />
 					<show id="cm:modified" force="true" />
 					<show id="cm:modifier" force="true" />
 					<show id="pdft:signaturedate" force="true" />
@@ -78,7 +78,7 @@
 					<show id="pdft:location" force="true" />
 					<show id="pdft:signer" force="true" />
 	            </field-visibility>
-	            
+
 	            <appearance>
 	                <field id="cm:modifier">
 	                    <control>
@@ -102,19 +102,19 @@
 	                </field>
 				</appearance>
 	        </form>
-	        
+
 	        <!-- search for for encrypted PDF documents -->
     		<form id="encryptedpdfsearch">
 				<field-visibility>
 					<show id="cm:name" force="true" />
-					<show id="cm:title" force="true" /> 
-					<show id="cm:description" force="true" /> 
+					<show id="cm:title" force="true" />
+					<show id="cm:description" force="true" />
 					<show id="cm:modified" force="true" />
 					<show id="cm:modifier" force="true" />
 					<show id="pdft:encryptiondate" force="true" />
 					<show id="pdft:encryptedby" force="true" />
 	            </field-visibility>
-	            
+
 	            <appearance>
 	                <field id="cm:modifier">
 	                    <control>
@@ -144,7 +144,7 @@
                        label="indicator.pdftoolkit.encrypted">
                 <evaluator>evaluator.pdftoolkit.doclib.indicator.isDocumentEncrypted</evaluator>
             </indicator>
-            
+
             <indicator id="evaluator.pdftoolkit.doclib.indicator.isDocumentSigned"
                        icon="pdf-signature-16.png"
                        index="505"
@@ -153,7 +153,7 @@
             </indicator>
         </indicators>
     </config>
-    
+
 	<!-- forms for each of the actions, these may not be needed as the default form is pretty good -->
 	<config evaluator="string-compare" condition="pdf-append">
     	<forms>
@@ -167,23 +167,23 @@
                 <appearance>
                 	<field id="inplace">
                 		<control template="/org/alfresco/pdftoolkit/components/form/controls/hidingCheckbox.ftl">
-                        	<control-param name="hideProperties">assoc_destination-folder-cntrl,prop_destination-name</control-param>    
+                        	<control-param name="hideProperties">assoc_destination-folder-cntrl,prop_destination-name</control-param>
                         </control>
                 	</field>
                 </appearance>
             </form>
         </forms>
     </config>
-     
-    <!-- 
+
+    <!--
     	possible bug in Alfresco?  If a MapConstraint is defined on a field and the field does not
     	have a config element, the following NPE is thrown:
-    	
+
     	Caused by: java.lang.NullPointerException
 			at org.alfresco.web.scripts.forms.FormUIGet.processFieldConstraintControl(FormUIGet.java:1956)
 			at org.alfresco.web.scripts.forms.FormUIGet.generateConstraintModel(FormUIGet.java:1816)
 			at org.alfresco.web.scripts.forms.FormUIGet.processFieldConstraints(FormUIGet.java:1701)
-			
+
 		Simply having an empty field in the appearance section seems to fix the issue (Community 4.2c)
      -->
 	<config evaluator="string-compare" condition="pdf-encryption">
@@ -209,14 +209,14 @@
                 <appearance>
                 	<field id="inplace">
                 		<control template="/org/alfresco/pdftoolkit/components/form/controls/hidingCheckbox.ftl">
-                        	<control-param name="hideProperties">assoc_destination-folder-cntrl,prop_destination-name</control-param>    
+                        	<control-param name="hideProperties">assoc_destination-folder-cntrl,prop_destination-name</control-param>
                         </control>
                 	</field>
                 </appearance>
             </form>
         </forms>
     </config>
-    
+
     <config evaluator="string-compare" condition="pdf-decryption">
     	<forms>
         	<form>
@@ -229,14 +229,14 @@
                 <appearance>
                 	<field id="inplace">
                 		<control template="/org/alfresco/pdftoolkit/components/form/controls/hidingCheckbox.ftl">
-                        	<control-param name="hideProperties">assoc_destination-folder-cntrl,prop_destination-name</control-param>    
+                        	<control-param name="hideProperties">assoc_destination-folder-cntrl,prop_destination-name</control-param>
                         </control>
                 	</field>
                 </appearance>
             </form>
         </forms>
     </config>
-    
+
 	<config evaluator="string-compare" condition="pdf-signature">
     	<forms>
         	<form>
@@ -262,13 +262,13 @@
                 <appearance>
                 	<field id="inplace">
                 		<control template="/org/alfresco/pdftoolkit/components/form/controls/hidingCheckbox.ftl">
-                        	<control-param name="hideProperties">assoc_destination-folder-cntrl,prop_destination-name</control-param>    
+                        	<control-param name="hideProperties">assoc_destination-folder-cntrl,prop_destination-name</control-param>
                         </control>
                 	</field>
                 	<field id="visibility">
                     	<control template="/org/alfresco/pdftoolkit/components/form/controls/dependentSelect.ftl">
                     		<control-param name="showSelectValues">visible:prop_page,prop_position,prop_location-x,prop_location-y,prop_width,prop_height</control-param>
-                    	</control> 
+                    	</control>
                     </field>
                     <field id="page">
                     	<control template="/org/alfresco/pdftoolkit/components/form/controls/selectPage.ftl" >
@@ -285,7 +285,7 @@
             </form>
         </forms>
     </config>
-    
+
 	<config evaluator="string-compare" condition="pdf-watermark">
     	<forms>
         	<form>
@@ -307,7 +307,7 @@
                 <appearance>
                 	<field id="inplace">
                 		<control template="/org/alfresco/pdftoolkit/components/form/controls/hidingCheckbox.ftl">
-                        	<control-param name="hideProperties">assoc_destination-folder-cntrl,prop_destination-name</control-param>    
+                        	<control-param name="hideProperties">assoc_destination-folder-cntrl,prop_destination-name</control-param>
                         </control>
                 	</field>
                     <field id="page">
@@ -330,7 +330,7 @@
             </form>
         </forms>
     </config>
-   
+
 	<config evaluator="string-compare" condition="pdf-insert-at-page">
     	<forms>
         	<form>
@@ -344,7 +344,7 @@
                 <appearance>
                 	<field id="inplace">
                 		<control template="/org/alfresco/pdftoolkit/components/form/controls/hidingCheckbox.ftl">
-                        	<control-param name="hideProperties">assoc_destination-folder-cntrl,prop_destination-name</control-param>    
+                        	<control-param name="hideProperties">assoc_destination-folder-cntrl,prop_destination-name</control-param>
                         </control>
                 	</field>
                 	<field id="page">
@@ -357,7 +357,7 @@
             </form>
         </forms>
     </config>
-    
+
     <config evaluator="string-compare" condition="pdf-delete-page">
     	<forms>
         	<form>
@@ -370,7 +370,7 @@
                 <appearance>
                 	<field id="inplace">
                 		<control template="/org/alfresco/pdftoolkit/components/form/controls/hidingCheckbox.ftl">
-                        	<control-param name="hideProperties">assoc_destination-folder-cntrl,prop_destination-name</control-param>    
+                        	<control-param name="hideProperties">assoc_destination-folder-cntrl,prop_destination-name</control-param>
                         </control>
                 	</field>
                 	<field id="page">
@@ -383,7 +383,7 @@
             </form>
         </forms>
     </config>
-    
+
     <config evaluator="string-compare" condition="pdf-extract-page">
     	<forms>
         	<form>
@@ -403,7 +403,7 @@
             </form>
         </forms>
     </config>
-    
+
 	<config evaluator="string-compare" condition="pdf-split">
     	<forms>
         	<form>
@@ -416,7 +416,7 @@
             </form>
         </forms>
     </config>
-    
+
 	<config evaluator="string-compare" condition="pdf-split-at-page">
     	<forms>
         	<form>
@@ -449,7 +449,7 @@
                 <appearance>
                 	<field id="inplace">
                 		<control template="/org/alfresco/pdftoolkit/components/form/controls/hidingCheckbox.ftl">
-                        	<control-param name="hideProperties">assoc_destination-folder-cntrl,prop_destination-name</control-param>    
+                        	<control-param name="hideProperties">assoc_destination-folder-cntrl,prop_destination-name</control-param>
                         </control>
                 	</field>
                 	<field id="page">
@@ -462,7 +462,7 @@
             </form>
         </forms>
     </config>
-    
+
 	<config evaluator="string-compare" condition="DocLibCustom">
 		<dependencies>
 			<js src="pdftoolkit/components/doclib/pdftoolkit-doclib-actions.js" />
