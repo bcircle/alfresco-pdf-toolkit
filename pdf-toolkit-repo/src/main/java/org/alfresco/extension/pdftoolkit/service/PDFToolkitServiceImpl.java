@@ -271,7 +271,7 @@ public class PDFToolkitServiceImpl extends PDFToolkitConstants implements PDFToo
             //if useAspect is true, store some additional info about the signature in the props
             if(useEncryptionAspect)
             {
-            	ns.addAspect(destinationNode, PDFToolkitModel.ASPECT_ENCRYPTED, new HashMap<QName, Serializable>());
+            	//ns.addAspect(destinationNode, PDFToolkitModel.ASPECT_ENCRYPTED, new HashMap<QName, Serializable>());
             	ns.setProperty(destinationNode, PDFToolkitModel.PROP_ENCRYPTIONDATE, new java.util.Date());
             	ns.setProperty(destinationNode, PDFToolkitModel.PROP_ENCRYPTEDBY, AuthenticationUtil.getRunAsUser());
             }
